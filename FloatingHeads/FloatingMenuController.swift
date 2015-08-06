@@ -136,6 +136,17 @@ class FloatingMenuController: UIViewController {
         }
     }
     
+    func relocateAllButtons() {
+        let count = buttonItems.count - 1
+        var buttonPlacement:CGFloat = 1
+        
+        for index in 0...count {
+            relocateButton(buttonItems[index], index: buttonPlacement)
+            buttonPlacement++
+        }
+
+    }
+    
     func animateButton(button:UIButton, index:CGFloat) {
         let buttonYCoordinate = closeButton.center.y - buttonPadding * index
         
@@ -157,7 +168,13 @@ class FloatingMenuController: UIViewController {
         button.layer.addAnimation(moveToPlace, forKey: "moveplaces")
         button.layer.addAnimation(rotate, forKey: "rotate")
         
-        button.center = CGPointMake(closeButton.center.x, buttonYCoordinate)
+        NSTimer.scheduledTimerWithTimeInterval(0.10, target: self, selector: "relocateAllButtons", userInfo:nil, repeats: false)
+        
     }
     
+    func relocateButton(button:UIButton, index:CGFloat) {
+        let buttonYCoordinate = closeButton.center.y - buttonPadding * index
+
+        button.center = CGPointMake(closeButton.center.x, buttonYCoordinate)
+    }
 }
